@@ -22,21 +22,38 @@ client.on('guildDelete', guild => {
 });
 
 client.on('message', async message => {
+	const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+	const command = args.shift().toLowerCase();
 	if(message.author.bot) return;
 	if(message.content.indexOf(config.prefix) !== 0) return;
 	console.log(message.content);
-	if (message.author.id === '81385189875388416') {
-		const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
-		const command = args.shift().toLowerCase();
-		if(command === 'ping') {
-			const pingmessage = await message.channel.send(':stopwatch:');
-			pingmessage.edit(`:stopwatch: Latency [${pingmessage.createdTimestamp - message.createdTimestamp}ms] API Latency [${Math.round(client.ping)}ms]`);
-		}
+	if(command === 'ping') {
+		const pingmessage = await message.channel.send(':stopwatch:');
+		pingmessage.edit(`:stopwatch: Latency [${pingmessage.createdTimestamp - message.createdTimestamp}ms] API Latency [${Math.round(client.ping)}ms]`);
+	}
+	if(command === 'invite') {
+		message.channel.send('https://discord.io/quotebot');
+	}
+	if(command === 'h') {
+		const embed = new Discord.RichEmbed()
+			.setAuthor(client.user.username, client.user.avatarURL)
+			.setColor(0x00AE86)
+			.setTitle('Available Commands')
+			.addField(`${config.prefix}h`, 'Shows you this!')
+			.addField(`${config.prefix}ping`, 'Gives you the bot\'s response time and API response time.')
+			.addField(`${config.prefix}invite`, 'Provide an invite link to invite this bot to your server! (Not available yet)')
+			.addField(`${config.prefix}purge`, 'Delete between 2 and 100 messages in a channel (Admin Only)')
+			.addField(`${config.prefix}q`, 'Fetch a qoute from the same channel by using `+q <messageid>`(Admin Only)')
+			.setTimestamp()
+			.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/3b8a7ea8c412d890fa99a1481ab3c269.png?size=2048');
+		message.channel.send({ embed });
+	}
+	{if (message.author.id === config.admin) {
 		if (command === 'restart') {
 			process.exit();
 		}
 		if (command === 'q') {
-			let originalMessage = message;
+			const originalMessage = message;
 			message.channel.fetchMessage(args[0])
 				.then(message => {
 					const embed = new Discord.RichEmbed()
@@ -56,11 +73,7 @@ client.on('message', async message => {
 			message.channel.bulkDelete(fetched)
 				.catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
 		}
-		if(command === 'invite') {
-			message.channel.send('https://discordapp.com/oauth2/authorize?&client_id=460972006809141257&scope=bot&permissions=641195117');
-		}
-
-	}
+	}}
 });
 
 
