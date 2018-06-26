@@ -56,14 +56,27 @@ client.on('message', async message => {
 			const originalMessage = message;
 			message.channel.fetchMessage(args[0])
 				.then(message => {
-					const embed = new Discord.RichEmbed()
-						.setColor(0x00AE86)
-						.setDescription(message.content)
-						.setAuthor(message.author.username, message.author.avatarURL)
-						.setTimestamp(new Date(message.createdTimestamp).toISOString())
-						.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/3b8a7ea8c412d890fa99a1481ab3c269.png?size=2048');
-					originalMessage.channel.send({ embed });
-				})
+					const Attachment = (message.attachments).array();
+					if (Attachment[0] !== undefined) {
+						const embed = new Discord.RichEmbed()
+							.setColor(0x00AE86)
+							.setDescription(message.content)
+							.setAuthor(message.author.username, message.author.avatarURL)
+							.setTimestamp(new Date(message.createdTimestamp).toISOString())
+							.setImage(Attachment[0].url)
+							.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/3b8a7ea8c412d890fa99a1481ab3c269.png?size=2048');
+						originalMessage.channel.send({ embed });
+					}
+					else {
+						const embed = new Discord.RichEmbed()
+							.setColor(0x00AE86)
+							.setDescription(message.content)
+							.setAuthor(message.author.username, message.author.avatarURL)
+							.setTimestamp(new Date(message.createdTimestamp).toISOString())
+							.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/3b8a7ea8c412d890fa99a1481ab3c269.png?size=2048');
+						originalMessage.channel.send({ embed });
+					}
+})
 				.catch(console.error);
 		}
 		if(command === 'purge') {
