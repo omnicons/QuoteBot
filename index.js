@@ -42,7 +42,7 @@ client.on('message', async message => {
 			break;
 
 		case 'q':
-			quote(message);
+			quote(message, command, args);
 			break;
 
 		case 'purge':
@@ -76,7 +76,7 @@ function help(message){
 	message.channel.send({ embed });
 }
 
-function quote(message){
+function quote(message, command, args){
 	const originalMessage = message;
 	const channel = message.guild.channels.get(args[1]);
 	if(args[1] !== undefined) {
