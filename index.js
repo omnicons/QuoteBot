@@ -48,52 +48,52 @@ client.on('message', async message => {
 			.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/2db9d70f0f9f0d48eb42935e0d25f04d.png?size=2048');
 		message.channel.send({ embed });
 	}
+	if (command === 'q') {
+		const originalMessage = message;
+		const channel = message.guild.channels.get(args[1]);
+		if(args[1] !== undefined) {
+			channel.fetchMessage(args[0])
+				.then(message => {
+					const Attachment = (message.attachments).array();
+					let embed = new Discord.RichEmbed()
+						.setColor(0x00AE86)
+						.setTitle(`Quote from #${message.channel.name}:`)
+						.setDescription(message.content)
+						.setAuthor(message.author.username, message.author.avatarURL)
+						.setTimestamp(new Date(message.createdTimestamp).toISOString())
+						.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/2db9d70f0f9f0d48eb42935e0d25f04d.png?size=2048');
+					if (Attachment[0] !== undefined) { embed.setImage(Attachment[0].url); }
+					originalMessage.channel.send({ embed });
+				})
+				.catch(console.error);
+		}
+		else {
+			message.channel.fetchMessage(args[0])
+				.then(message => {
+					const Attachment = (message.attachments).array();
+					let embed = new Discord.RichEmbed()
+						.setColor(0x00AE86)
+						.setTitle(`Quote from #${message.channel.name}:`)
+						.setDescription(message.content)
+						.setAuthor(message.author.username, message.author.avatarURL)
+						.setTimestamp(new Date(message.createdTimestamp).toISOString())
+						.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/2db9d70f0f9f0d48eb42935e0d25f04d.png?size=2048');
+					if (Attachment[0] !== undefined) { embed.setImage(Attachment[0].url); }
+					originalMessage.channel.send({ embed });
+				})
+				.catch(console.error);
+		}
+	}
+	if(command === 'purge') {
+		const deleteCount = parseInt(args[0], 10);
+		if(!deleteCount || deleteCount < 2 || deleteCount > 100) {return message.reply(':shield: You can select anywhere from 2 to 100 messages to delete.');}
+		const fetched = await message.channel.fetchMessages({ limit: deleteCount });
+		message.channel.bulkDelete(fetched)
+			.catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
+	}
 	{if (message.author.id === config.admin) {
 		if (command === 'restart') {
 			process.exit();
-		}
-		if (command === 'q') {
-			const originalMessage = message;
-			const channel = message.guild.channels.get(args[1]);
-			if(args[1] !== undefined) {
-				channel.fetchMessage(args[0])
-					.then(message => {
-						const Attachment = (message.attachments).array();
-						let embed = new Discord.RichEmbed()
-							.setColor(0x00AE86)
-							.setTitle(`Quote from #${message.channel.name}:`)
-							.setDescription(message.content)
-							.setAuthor(message.author.username, message.author.avatarURL)
-							.setTimestamp(new Date(message.createdTimestamp).toISOString())
-							.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/2db9d70f0f9f0d48eb42935e0d25f04d.png?size=2048');
-						if (Attachment[0] !== undefined) { embed.setImage(Attachment[0].url); }
-						originalMessage.channel.send({ embed });
-					})
-					.catch(console.error);
-			}
-			else {
-				message.channel.fetchMessage(args[0])
-					.then(message => {
-						const Attachment = (message.attachments).array();
-						let embed = new Discord.RichEmbed()
-							.setColor(0x00AE86)
-							.setTitle(`Quote from #${message.channel.name}:`)
-							.setDescription(message.content)
-							.setAuthor(message.author.username, message.author.avatarURL)
-							.setTimestamp(new Date(message.createdTimestamp).toISOString())
-							.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/2db9d70f0f9f0d48eb42935e0d25f04d.png?size=2048');
-						if (Attachment[0] !== undefined) { embed.setImage(Attachment[0].url); }
-						originalMessage.channel.send({ embed });
-					})
-					.catch(console.error);
-			}
-		}
-		if(command === 'purge') {
-			const deleteCount = parseInt(args[0], 10);
-			if(!deleteCount || deleteCount < 2 || deleteCount > 100) {return message.reply(':shield: You can select anywhere from 2 to 100 messages to delete.');}
-			const fetched = await message.channel.fetchMessages({ limit: deleteCount });
-			message.channel.bulkDelete(fetched)
-				.catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
 		}
 	}}
 });
