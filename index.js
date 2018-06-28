@@ -45,7 +45,7 @@ client.on('message', async message => {
 			.addField(`${config.prefix}purge`, 'Delete between 2 and 100 messages in a channel (Admin Only)')
 			.addField(`${config.prefix}q`, 'Fetch a qoute from the same channel by using `+q <messageid>`(Admin Only)')
 			.setTimestamp()
-			.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/3b8a7ea8c412d890fa99a1481ab3c269.png?size=2048');
+			.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/2db9d70f0f9f0d48eb42935e0d25f04d.png?size=2048');
 		message.channel.send({ embed });
 	}
 	{if (message.author.id === config.admin) {
@@ -54,7 +54,8 @@ client.on('message', async message => {
 		}
 		if (command === 'q') {
 			const originalMessage = message;
-			message.channel.fetchMessage(args[0])
+			const channel = message.guild.channels.get(args[1]);
+			channel.fetchMessage(args[0])
 				.then(message => {
 					const Attachment = (message.attachments).array();
 					if (Attachment[0] !== undefined) {
@@ -64,7 +65,7 @@ client.on('message', async message => {
 							.setAuthor(message.author.username, message.author.avatarURL)
 							.setTimestamp(new Date(message.createdTimestamp).toISOString())
 							.setImage(Attachment[0].url)
-							.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/3b8a7ea8c412d890fa99a1481ab3c269.png?size=2048');
+							.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/2db9d70f0f9f0d48eb42935e0d25f04d.png?size=2048');
 						originalMessage.channel.send({ embed });
 					}
 					else {
@@ -73,10 +74,10 @@ client.on('message', async message => {
 							.setDescription(message.content)
 							.setAuthor(message.author.username, message.author.avatarURL)
 							.setTimestamp(new Date(message.createdTimestamp).toISOString())
-							.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/3b8a7ea8c412d890fa99a1481ab3c269.png?size=2048');
+							.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/2db9d70f0f9f0d48eb42935e0d25f04d.png?size=2048');
 						originalMessage.channel.send({ embed });
 					}
-})
+				})
 				.catch(console.error);
 		}
 		if(command === 'purge') {
