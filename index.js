@@ -46,7 +46,11 @@ client.on('message', async message => {
 			break;
 
 		case 'purge':
-			purge(message);
+			const deleteCount = parseInt(args[0], 10);
+			if(!deleteCount || deleteCount < 2 || deleteCount > 100) {return message.reply(':shield: You can select anywhere from 2 to 100 messages to delete.');}
+			const fetched = await message.channel.fetchMessages({ limit: deleteCount });
+			message.channel.bulkDelete(fetched)
+			.catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
 			break;
 
 		case 'restart':
@@ -108,15 +112,6 @@ function quote(message){
 			.catch(console.error);
 	}
 }
-
-function purge(message){
-	const deleteCount = parseInt(args[0], 10);
-	if(!deleteCount || deleteCount < 2 || deleteCount > 100) {return message.reply(':shield: You can select anywhere from 2 to 100 messages to delete.');}
-	const fetched = await message.channel.fetchMessages({ limit: deleteCount });
-	message.channel.bulkDelete(fetched)
-		.catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
-}
-
 
 function _restart(message){
 	if (message.author.id === config.admin){
