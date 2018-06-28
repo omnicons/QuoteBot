@@ -29,7 +29,8 @@ client.on('message', async message => {
 	console.log(message.content);
 	switch(command){
 		case 'ping':
-			ping(message);
+			const pingmessage = await message.channel.send(':stopwatch:');
+			pingmessage.edit(`:stopwatch: Latency [${pingmessage.createdTimestamp - message.createdTimestamp}ms] API Latency [${Math.round(client.ping)}ms]`);
 			break;
 
 		case 'invite':
@@ -55,12 +56,6 @@ client.on('message', async message => {
 		default: break;
 	}
 });
-
-function ping(message){
-	const pingmessage = await message.channel.send(':stopwatch:');
-	pingmessage.edit(`:stopwatch: Latency [${pingmessage.createdTimestamp - message.createdTimestamp}ms] API Latency [${Math.round(client.ping)}ms]`);
-}
-
 
 function help(message){
 	const embed = new Discord.RichEmbed()
