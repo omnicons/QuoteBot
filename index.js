@@ -6,19 +6,19 @@ const config = require('./config.json');
 client.on('ready', () => {
 	console.log(`${client.user.username} logged in!`);
 	// sets nowplaying and lets the user know that the bot started correctly
-	client.user.setActivity(`+h | [${client.guilds.size}] servers`);
+	client.user.setActivity(`${config.prefix}h | [${client.guilds.size}] servers`);
 });
 
 client.on('guildCreate', guild => {
 	// This will update the nowplaying when the bot joins a guild
 	console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
-	client.user.setActivity(`+h | [${client.guilds.size}] servers`);
+	client.user.setActivity(`${config.prefix}h | [${client.guilds.size}] servers`);
 });
 
 client.on('guildDelete', guild => {
 	// This will update the nowplaying when the bot leaves a guild or is kicked
 	console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
-	client.user.setActivity(`+h | [${client.guilds.size}] servers`);
+	client.user.setActivity(`${config.prefix}h | [${client.guilds.size}] servers`);
 });
 
 client.on('message', async message => {
@@ -34,7 +34,7 @@ client.on('message', async message => {
 			break;
 
 		case 'invite':
-			message.channel.send('https://discord.io/quotebot');
+			invite(message);
 			break;
 
 		case 'h':
@@ -91,9 +91,12 @@ function quote(message, command, args){
 					.setTimestamp(new Date(message.createdTimestamp).toISOString())
 					.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/2db9d70f0f9f0d48eb42935e0d25f04d.png?size=2048');
 				if (Attachment[0] !== undefined) { embed.setImage(Attachment[0].url); }
-				originalMessage.channel.send({ embed });
+				if(channel.nsfw === true){
+					if (originalMessage.channel.nsfw === true){originalMessage.channel.send({ embed });}
+					else { originalMessage.channel.send("You cannot quote an NSFW channel in an SFW channel!")}
+				} else {originalMessage.channel.send({ embed });}
 			})
-			.catch(console.error);
+			.catch(originalMessage.channel.send("Usage needs to be +q messageid channelid"));
 	}
 	else {
 		message.channel.fetchMessage(args[0])
@@ -109,16 +112,28 @@ function quote(message, command, args){
 				if (Attachment[0] !== undefined) { embed.setImage(Attachment[0].url); }
 				originalMessage.channel.send({ embed });
 			})
-			.catch(console.error);
+			.catch(originalMessage.channel.send("Usage needs to be +q messageid channelid"));
 	}
 }
 
 function _restart(message){
 	if (message.author.id === config.admin){
 		process.exit();
+	} else { 
+		message.channel.send("This command is to be used by the bot administrator.")
 	}
 }
 
-
+function invite(message){
+	const embed = new Discord.RichEmbed()
+		.setAuthor(client.user.username, client.user.avatarURL)
+		.setColor(0x00AE86)
+		.setTitle('Invite this bot to your server!')
+		.setThumbnail(client.user.avatarURL)
+		.setDescription('You can invite this bot to your server using [this link](https://discordapp.com/oauth2/authorize?&client_id=460972006809141257&scope=bot)!')
+		.setTimestamp()	
+		.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/2db9d70f0f9f0d48eb42935e0d25f04d.png?size=2048');
+	message.channel.send({ embed });
+}
 client.login(config.token);
 
