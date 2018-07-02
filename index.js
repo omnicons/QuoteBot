@@ -137,11 +137,14 @@ function invite(message){
 }
 
 function presence(){
-	if (client.guilds.size !== 1){
-		client.user.setActivity(`${client.guilds.size} servers | ${config.prefix}h`, { type: `WATCHING`});
-	} else {
-		client.user.setActivity(`${client.guilds.size} server | ${config.prefix}h`, { type: `WATCHING`});
-	}
+
+	client.user.setActivity(`${client.guilds.size} server${ (client.guilds.size !== 1) ? 's' : ''} | ${config.prefix}h`, { type: `WATCHING`});
+
+	// if (client.guilds.size !== 1){
+	// 	client.user.setActivity(`${client.guilds.size} servers | ${config.prefix}h`, { type: `WATCHING`});
+	// } else {
+	// 	client.user.setActivity(`${client.guilds.size} server | ${config.prefix}h`, { type: `WATCHING`});
+	// }
 }
 client.login(config.token);
 
