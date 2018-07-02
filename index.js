@@ -6,19 +6,19 @@ const config = require('./config.json');
 client.on('ready', () => {
 	console.log(`${client.user.username} logged in!`);
 	// sets nowplaying and lets the user know that the bot started correctly
-	client.user.setActivity(`${config.prefix}h | [${client.guilds.size}] servers`);
+	presence();
 });
 
 client.on('guildCreate', guild => {
 	// This will update the nowplaying when the bot joins a guild
 	console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
-	client.user.setActivity(`${config.prefix}h | [${client.guilds.size}] servers`);
+	presence()
 });
 
 client.on('guildDelete', guild => {
 	// This will update the nowplaying when the bot leaves a guild or is kicked
 	console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
-	client.user.setActivity(`${config.prefix}h | [${client.guilds.size}] servers`);
+	presence();
 });
 
 client.on('message', async message => {
@@ -134,6 +134,14 @@ function invite(message){
 		.setTimestamp()	
 		.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/2db9d70f0f9f0d48eb42935e0d25f04d.png?size=2048');
 	message.channel.send({ embed });
+}
+
+function presence(){
+	if (client.guilds.size !== 1){
+		client.user.setActivity(`${client.guilds.size} servers | ${config.prefix}h`, { type: `WATCHING`});
+	} else {
+		client.user.setActivity(`${client.guilds.size} server | ${config.prefix}h`, { type: `WATCHING`});
+	}
 }
 client.login(config.token);
 
