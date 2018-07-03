@@ -135,12 +135,12 @@ function update(message){
 		const pull = spawn ('git', ['pull'], {cwd:`${config.installdir}`});
 
 		pull.stdout.on('data', function(data){
-		console.log(data.toString());
+		const output = data.toString();
 		const embed = new Discord.RichEmbed()
 			.setAuthor(client.user.username, client.user.avatarURL)
 			.setColor(0x00AE86)
 			.setTitle("Self Updater")
-			.setDescription(`${data.toString()}`)
+			.setDescription(`${output}`)
 			.addField("Status",":white_check_mark: Successful!")
 			.setTimestamp()	
 			.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/2db9d70f0f9f0d48eb42935e0d25f04d.png?size=2048');
