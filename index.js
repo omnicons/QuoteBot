@@ -84,6 +84,10 @@ function help(message){
 function quote(message, command, args){
 	const originalMessage = message;
 	const channel = message.guild.channels.get(args[1]);
+	if(args[0] === undefined) {
+		originalMessage.channel.send("Usage needs to be +q messageid channelid");
+		break;
+	}
 	if(args[1] !== undefined) {
 		channel.fetchMessage(args[0])
 			.then(message => {
@@ -101,7 +105,6 @@ function quote(message, command, args){
 					else { originalMessage.channel.send("You cannot quote an NSFW channel in an SFW channel!")}
 				} else {originalMessage.channel.send({ embed });}
 			})
-			.catch(originalMessage.channel.send("Usage needs to be +q messageid channelid"));
 	}
 	else {
 		message.channel.fetchMessage(args[0])
@@ -117,7 +120,6 @@ function quote(message, command, args){
 				if (Attachment[0] !== undefined) { embed.setImage(Attachment[0].url); }
 				originalMessage.channel.send({ embed });
 			})
-			.catch(originalMessage.channel.send("Usage needs to be +q messageid channelid"));
 	}
 }
 
@@ -134,8 +136,16 @@ function update(message){
 		const pull = spawn ('git', ['pull'], {cwd:`${config.installdir}`});
 
 		pull.stdout.on('data', function(data){
-		console.log(data.toString()); 
-		message.channel.send(`${data.toString()} \nSuccessful!`)
+		console.log(data.toString());
+		const embed = new Discord.RichEmbed()
+			.setAuthor(client.user.username, client.user.avatarURL)
+			.setColor(0x00AE86)
+			.setTitle("Self Updater")
+			.setDescription(`${data.toString()}`)
+			.addField("Status",":white_check_mark: Successful!")
+			.setTimestamp()	
+			.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/2db9d70f0f9f0d48eb42935e0d25f04d.png?size=2048');
+		message.channel.send({ embed });
 	});
 	}
 }
