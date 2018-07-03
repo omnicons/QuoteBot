@@ -86,7 +86,6 @@ function quote(message, command, args){
 	const channel = message.guild.channels.get(args[1]);
 	if(args[0] === undefined) {
 		originalMessage.channel.send("Usage needs to be +q messageid channelid");
-		break;
 	}
 	if(args[1] !== undefined) {
 		channel.fetchMessage(args[0])
