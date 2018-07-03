@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const { spawn } = require('child_process');
 const client = new Discord.Client({ autoReconnect: true });
 // config
 const config = require('./config.json');
@@ -55,6 +56,10 @@ client.on('message', async message => {
 
 		case 'restart':
 			_restart(message);
+			break;
+		
+		case 'update':
+			update(message);
 			break;
 
 		default: break;
@@ -121,6 +126,17 @@ function _restart(message){
 		process.exit();
 	} else { 
 		message.channel.send("This command is to be used by the bot administrator.")
+	}
+}
+
+function update(message){
+	if(message.author.id === config.admin){
+		const pull = spawn ('git', ['pull'], {cwd:`${config.installdir}`});
+
+		pull.stdout.on('data', function(data){
+		console.log(data.toString()); 
+		message.channel.send(`${data.toString()} \nSuccessful!`)
+	});
 	}
 }
 
