@@ -12,7 +12,7 @@ client.on('ready', () => {
 client.on('guildCreate', guild => {
 	// This will update the nowplaying when the bot joins a guild
 	console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
-	presence()
+	presence();
 });
 
 client.on('guildDelete', guild => {
@@ -68,9 +68,9 @@ function help(message){
 		.setTitle('Available Commands')
 		.addField(`${config.prefix}h`, 'Shows you this!')
 		.addField(`${config.prefix}ping`, 'Gives you the bot\'s response time and API response time.')
-		.addField(`${config.prefix}invite`, 'Provide an invite link to invite this bot to your server! (Not available yet)')
-		.addField(`${config.prefix}purge`, 'Delete between 2 and 100 messages in a channel (Admin Only)')
-		.addField(`${config.prefix}q`, 'Fetch a qoute from the same channel by using `+q <messageid>`(Admin Only)')
+		.addField(`${config.prefix}invite`, 'Provide an invite link to invite this bot to your server!')
+		.addField(`${config.prefix}purge`, 'Delete between 2 and 100 messages in a channel (Needs Manage Messages)')
+		.addField(`${config.prefix}q`, `Fetch a qoute from the same channel by using ${config.prefix}q <messageid> for in channel quotes and ${config.prefix}q <messageid> <channelid> for fetching quotes from other channels`)
 		.setTimestamp()
 		.setFooter('Bot by Kayda#0001', 'https://cdn.discordapp.com/avatars/81385189875388416/2db9d70f0f9f0d48eb42935e0d25f04d.png?size=2048');
 	message.channel.send({ embed });
@@ -137,14 +137,7 @@ function invite(message){
 }
 
 function presence(){
-
 	client.user.setActivity(`${client.guilds.size} server${ (client.guilds.size !== 1) ? 's' : ''} | ${config.prefix}h`, { type: `WATCHING`});
-
-	// if (client.guilds.size !== 1){
-	// 	client.user.setActivity(`${client.guilds.size} servers | ${config.prefix}h`, { type: `WATCHING`});
-	// } else {
-	// 	client.user.setActivity(`${client.guilds.size} server | ${config.prefix}h`, { type: `WATCHING`});
-	// }
 }
 client.login(config.token);
 
