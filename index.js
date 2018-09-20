@@ -4,6 +4,10 @@ const client = new Discord.Client({ autoReconnect: true });
 // config
 const config = require('./config.json');
 
+client.footerDesc = client.footerDesc || 'Bot by Kayda#0001';
+client.footerAvatar = client.footerAvatar || 'https://i.imgur.com/vP5Azbd.png';
+
+
 client.on('ready', () => {
 	console.log(`${client.user.username} logged in!`);
 	// sets nowplaying and lets the user know that the bot started correctly
@@ -77,7 +81,7 @@ function help(message){
 		.addField(`${config.prefix}purge`, 'Delete between 2 and 100 messages in a channel (Needs Manage Messages)')
 		.addField(`${config.prefix}q`, `Fetch a quote from the same channel by using ${config.prefix}q <messageid> for in channel quotes and ${config.prefix}q <messageid> <channelid> for fetching quotes from other channels`)
 		.setTimestamp()
-		.setFooter('Bot by Kayda#0001', 'https://i.imgur.com/vP5Azbd.png');
+		.setFooter(client.footerDesc, client.footerAvatar);
 	message.channel.send({ embed });
 }
 
@@ -97,7 +101,7 @@ function quote(message, command, args){
 					.setDescription(message.content)
 					.setAuthor(message.author.username, message.author.avatarURL)
 					.setTimestamp(new Date(message.createdTimestamp).toISOString())
-					.setFooter('Bot by Kayda#0001', 'https://i.imgur.com/vP5Azbd.png');
+					.setFooter(client.footerDesc, client.footerAvatar);
 				if (Attachment[0] !== undefined) { embed.setImage(Attachment[0].url); }
 				if(channel.nsfw === true){
 					if (originalMessage.channel.nsfw === true){originalMessage.channel.send({ embed });}
@@ -115,7 +119,7 @@ function quote(message, command, args){
 					.setDescription(message.content)
 					.setAuthor(message.author.username, message.author.avatarURL)
 					.setTimestamp(new Date(message.createdTimestamp).toISOString())
-					.setFooter('Bot by Kayda#0001', 'https://i.imgur.com/vP5Azbd.png');
+					.setFooter('Bot by Kayda#0001', client.footerAvatar);
 				if (Attachment[0] !== undefined) { embed.setImage(Attachment[0].url); }
 				originalMessage.channel.send({ embed });
 			})
@@ -144,7 +148,7 @@ function update(message){
 			.addField("Status",":white_check_mark: Successful!")
 			.addField("Repository",`[omnicons/QuoteBot](https://github.com/omnicons/QuoteBot/)`)
 			.setTimestamp()	
-			.setFooter('Bot by Kayda#0001', 'https://i.imgur.com/vP5Azbd.png');
+			.setFooter(client.footerDesc, client.footerAvatar);
 		message.channel.send({ embed });
 	});
 	}
@@ -158,7 +162,7 @@ function invite(message){
 		.setThumbnail(client.user.avatarURL)
 		.setDescription('You can invite this bot to your server using [this link](https://discordapp.com/oauth2/authorize?&client_id=460972006809141257&scope=bot)!')
 		.setTimestamp()	
-		.setFooter('Bot by Kayda#0001', 'https://i.imgur.com/vP5Azbd.png');
+		.setFooter(client.footerDesc, client.footerAvatar);
 	message.channel.send({ embed });
 }
 

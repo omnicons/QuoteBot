@@ -2,5 +2,7 @@
     "token"  : "tokenhere",
     "prefix" : "+"
     "admin"  : "adminuserID",
-    "installdir" : "path\\to\\installdir"
+    "installdir" : "path\\to\\installdir",
+    "footerDesc" : "Bot by Kayda",
+    "footerAvatar" : "https://derp.com/derp.jpg"
   }
