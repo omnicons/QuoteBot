@@ -97,7 +97,7 @@ function quote(message, command, args){
 					.setDescription(message.content)
 					.setAuthor(message.author.username, message.author.avatarURL)
 					.setTimestamp(new Date(message.createdTimestamp).toISOString())
-					.setFooter('Bot by Kayda#0001', 'https://i.imgur.com/vP5Azbd.png');
+					.setFooter('Bot by omnicons', 'https://i.imgur.com/vP5Azbd.png');
 				if (Attachment[0] !== undefined) { embed.setImage(Attachment[0].url); }
 				if(channel.nsfw === true){
 					if (originalMessage.channel.nsfw === true){originalMessage.channel.send({ embed });}
