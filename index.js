@@ -116,7 +116,7 @@ function quote(message, command, args){
 					.setTitle(`Quote from #${message.channel.name}:`)
 					.setDescription(`${message.content}
 					
-					[Jump To](https://discordapp.com/channels/${channel.guild.id}/${channel.id}/${args[0]})`)
+					[Jump To](https://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${args[0]})`)
 					.setAuthor(message.author.username, message.author.avatarURL)
 					.setTimestamp(new Date(message.createdTimestamp).toISOString())
 					.setFooter('Bot by omnicons', 'https://i.imgur.com/vP5Azbd.png');
