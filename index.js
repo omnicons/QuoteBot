@@ -87,26 +87,6 @@ function quote(message, command, args){
 	if(args[0] === undefined) {
 		originalMessage.channel.send("Usage needs to be +q messageid channelid serverid");
 	}
-	if(args[1] !== undefined) {
-		channel.fetchMessage(args[0])
-			.then(message => {
-				const Attachment = (message.attachments).array();
-				let embed = new Discord.RichEmbed()
-					.setColor(0x00AE86)
-					.setTitle(`Quote from #${message.channel.name}:`)
-					.setDescription(`${message.content}
-
-					[Jump To](https://discordapp.com/channels/${channel.guild.id}/${args[1]}/${args[0]})`)
-					.setAuthor(message.author.username, message.author.avatarURL)
-					.setTimestamp(new Date(message.createdTimestamp).toISOString())
-					.setFooter('Bot by omnicons', 'https://i.imgur.com/vP5Azbd.png');
-				if (Attachment[0] !== undefined) { embed.setImage(Attachment[0].url); }
-				if(channel.nsfw === true){
-					if (originalMessage.channel.nsfw === true){originalMessage.channel.send({ embed });}
-					else { originalMessage.channel.send("You cannot quote an NSFW channel in an SFW channel!")}
-				} else {originalMessage.channel.send({ embed });}
-			})
-	}
 	if(args[2] !== undefined) {
 		if (client.guilds.has(args[2]) == true) {
 			const server = client.guilds.get(args[2]);
@@ -132,6 +112,26 @@ function quote(message, command, args){
 		} else {
 			originalMessage.channel.send("Usage needs to be +q messageid channelid serverid");
 		}
+	}
+	if(args[1] !== undefined) {
+		channel.fetchMessage(args[0])
+			.then(message => {
+				const Attachment = (message.attachments).array();
+				let embed = new Discord.RichEmbed()
+					.setColor(0x00AE86)
+					.setTitle(`Quote from #${message.channel.name}:`)
+					.setDescription(`${message.content}
+
+					[Jump To](https://discordapp.com/channels/${channel.guild.id}/${args[1]}/${args[0]})`)
+					.setAuthor(message.author.username, message.author.avatarURL)
+					.setTimestamp(new Date(message.createdTimestamp).toISOString())
+					.setFooter('Bot by omnicons', 'https://i.imgur.com/vP5Azbd.png');
+				if (Attachment[0] !== undefined) { embed.setImage(Attachment[0].url); }
+				if(channel.nsfw === true){
+					if (originalMessage.channel.nsfw === true){originalMessage.channel.send({ embed });}
+					else { originalMessage.channel.send("You cannot quote an NSFW channel in an SFW channel!")}
+				} else {originalMessage.channel.send({ embed });}
+			})
 	}
 	else {
 		message.channel.fetchMessage(args[0])
