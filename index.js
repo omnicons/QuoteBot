@@ -94,7 +94,9 @@ function quote(message, command, args){
 				let embed = new Discord.RichEmbed()
 					.setColor(0x00AE86)
 					.setTitle(`Quote from #${message.channel.name}:`)
-					.setDescription(message.content)
+					.setDescription(`${message.content}
+					
+					[Jump To](https://discordapp.com/channels/${channel.guild.id}/${args[1]}/${args[0]})`)
 					.setAuthor(message.author.username, message.author.avatarURL)
 					.setTimestamp(new Date(message.createdTimestamp).toISOString())
 					.setFooter('Bot by omnicons', 'https://i.imgur.com/vP5Azbd.png');
@@ -112,7 +114,9 @@ function quote(message, command, args){
 				let embed = new Discord.RichEmbed()
 					.setColor(0x00AE86)
 					.setTitle(`Quote from #${message.channel.name}:`)
-					.setDescription(message.content)
+					.setDescription(`${message.content}
+					
+					[Jump To](https://discordapp.com/channels/${channel.guild.id}/${channel.id}/${args[0]})`)
 					.setAuthor(message.author.username, message.author.avatarURL)
 					.setTimestamp(new Date(message.createdTimestamp).toISOString())
 					.setFooter('Bot by omnicons', 'https://i.imgur.com/vP5Azbd.png');
