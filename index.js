@@ -57,7 +57,7 @@ client.on('message', async message => {
 		case 'restart':
 			_restart(message);
 			break;
-		
+
 		case 'update':
 			update(message);
 			break;
@@ -75,7 +75,7 @@ function help(message){
 		.addField(`${config.prefix}ping`, 'Gives you the bot\'s response time and API response time.')
 		.addField(`${config.prefix}invite`, 'Provide an invite link to invite this bot to your server!')
 		.addField(`${config.prefix}purge`, 'Delete between 2 and 100 messages in a channel (Needs Manage Messages)')
-		.addField(`${config.prefix}q`, `Fetch a quote from the same channel by using ${config.prefix}q <messageid> for in channel quotes and ${config.prefix}q <messageid> <channelid> for fetching quotes from other channels`)
+		.addField(`${config.prefix}q`, `Fetch a quote from the same channel by using ${config.prefix}q <messageid> for in channel quotes, ${config.prefix}q <messageid> <channelid> for fetching quotes from other channels and ${config.prefix}q <messageid> <channelid> <serverid> for fetching quotes from other servers (being aware that the bot is in that server)`)
 		.setTimestamp()
 		.setFooter('Bot by omnicons', 'https://i.imgur.com/vP5Azbd.png');
 	message.channel.send({ embed });
@@ -85,7 +85,7 @@ function quote(message, command, args){
 	const originalMessage = message;
 	const channel = message.guild.channels.get(args[1]);
 	if(args[0] === undefined) {
-		originalMessage.channel.send("Usage needs to be +q messageid channelid");
+		originalMessage.channel.send("Usage needs to be +q messageid channelid serverid");
 	}
 	if(args[1] !== undefined) {
 		channel.fetchMessage(args[0])
@@ -95,7 +95,7 @@ function quote(message, command, args){
 					.setColor(0x00AE86)
 					.setTitle(`Quote from #${message.channel.name}:`)
 					.setDescription(`${message.content}
-					
+
 					[Jump To](https://discordapp.com/channels/${channel.guild.id}/${args[1]}/${args[0]})`)
 					.setAuthor(message.author.username, message.author.avatarURL)
 					.setTimestamp(new Date(message.createdTimestamp).toISOString())
@@ -107,6 +107,32 @@ function quote(message, command, args){
 				} else {originalMessage.channel.send({ embed });}
 			})
 	}
+	if(args[2] !== undefined) {
+		if (client.guilds.has(args[2]) == true) {
+			const server = client.guilds.get(args[2]);
+			const serverChannel = server.channels.get(args[1])
+			serverChannel.fetchMessage(args[0])
+			.then(message => {
+				const Attachment = (message.attachments).array();
+				let embed = new Discord.RichEmbed()
+					.setColor(0x00AE86)
+					.setTitle(`Quote from #${message.channel.name}:`)
+					.setDescription(`${message.content}
+
+					[Jump To](https://discordapp.com/channels/${args[2]}/${args[1]}/${args[0]})`)
+					.setAuthor(message.author.username, message.author.avatarURL)
+					.setTimestamp(new Date(message.createdTimestamp).toISOString())
+					.setFooter('Bot by omnicons', 'https://i.imgur.com/vP5Azbd.png');
+				if (Attachment[0] !== undefined) { embed.setImage(Attachment[0].url); }
+					if(channel.nsfw === true){
+					if (originalMessage.channel.nsfw === true){originalMessage.channel.send({ embed });}
+					else { originalMessage.channel.send("You cannot quote an NSFW channel in an SFW channel!")}
+				} else {originalMessage.channel.send({ embed });}
+			})
+		} else {
+			originalMessage.channel.send("Usage needs to be +q messageid channelid serverid");
+		}
+	}
 	else {
 		message.channel.fetchMessage(args[0])
 			.then(message => {
@@ -115,7 +141,7 @@ function quote(message, command, args){
 					.setColor(0x00AE86)
 					.setTitle(`Quote from #${message.channel.name}:`)
 					.setDescription(`${message.content}
-					
+
 					[Jump To](https://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${args[0]})`)
 					.setAuthor(message.author.username, message.author.avatarURL)
 					.setTimestamp(new Date(message.createdTimestamp).toISOString())
@@ -129,7 +155,7 @@ function quote(message, command, args){
 function _restart(message){
 	if (message.author.id === config.admin){
 		process.exit();
-	} else { 
+	} else {
 		message.channel.send("This command is to be used by the bot administrator.")
 	}
 }
@@ -147,7 +173,7 @@ function update(message){
 			.setDescription(`${output}`)
 			.addField("Status",":white_check_mark: Successful!")
 			.addField("Repository",`[omnicons/QuoteBot](https://github.com/omnicons/QuoteBot/)`)
-			.setTimestamp()	
+			.setTimestamp()
 			.setFooter('Bot by omnicons', 'https://i.imgur.com/vP5Azbd.png');
 		message.channel.send({ embed });
 	});
@@ -161,7 +187,7 @@ function invite(message){
 		.setTitle('Invite this bot to your server!')
 		.setThumbnail(client.user.avatarURL)
 		.setDescription('You can invite this bot to your server using [this link](https://discordapp.com/oauth2/authorize?&client_id=460972006809141257&scope=bot)!')
-		.setTimestamp()	
+		.setTimestamp()
 		.setFooter('Bot by omnicons', 'https://i.imgur.com/vP5Azbd.png');
 	message.channel.send({ embed });
 }
@@ -170,4 +196,3 @@ function presence(){
 	client.user.setActivity(`${client.guilds.size} server${ (client.guilds.size !== 1) ? 's' : ''} | ${config.prefix}h`, { type: `WATCHING`});
 }
 client.login(config.token);
-
