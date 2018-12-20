@@ -48,10 +48,13 @@ client.on('message', async message => {
 
 		case 'purge':
 			const deleteCount = parseInt(args[0], 10);
+			if (message.member.permissions.has("MANAGE_MESSAGES") === true) {
 			if(!deleteCount || deleteCount < 2 || deleteCount > 100) {return message.reply(':shield: You can select anywhere from 2 to 100 messages to delete.');}
 			const fetched = await message.channel.fetchMessages({ limit: deleteCount });
 			message.channel.bulkDelete(fetched)
-			.catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
+			.catch(error => message.reply(`Bot does not have manage messages in this channel!`))
+			}
+			else {message.reply(`You do not have the correct permissions to delete messages in this channel!`)}
 			break;
 
 		case 'restart':
