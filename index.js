@@ -22,7 +22,11 @@ client.on('guildDelete', guild => {
 	presence();
 });
 
-client.on('')
+client.on('guildMemberAdd', member => {
+    member.guild.channels.get('welcomeChannel').send(`${user.name}, welcome to the ${guild.name} Discord Server! Simply use the command **${config.sprefix}verify age** vorepref to get started! /nFor vore preference we have the options of pred, mostly pred, switch, mostly prey, prey, neither. **Please make sure you use the command in DM for your own privacy!** /n **__If you have any questions, please contact a staff member and they can assist you further!__**`); 
+});
+
+
 
 client.on('message', async message => {
 	const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
@@ -44,10 +48,6 @@ client.on('message', async message => {
 			help(message);
 			break;
 
-		case 'q':
-			quote(message, command, args);
-			break;
-
 		case 'purge':
 			const deleteCount = parseInt(args[0], 10);
 			if (message.member.permissions.has("MANAGE_MESSAGES") === true) {
@@ -67,9 +67,17 @@ client.on('message', async message => {
 			update(message);
 			break;
 
+		case 'verify':
+			verify(message, command, args)
+
 		default: break;
 	}
 });
+
+function verify(message, command, args) {
+    	client.guilds.get(config.guild).member(message.author).roles.add(config.role)
+        	.catch(console.error)
+}
 
 function help(message){
 	const embed = new Discord.RichEmbed()
@@ -80,7 +88,7 @@ function help(message){
 		.addField(`${config.prefix}ping`, 'Gives you the bot\'s response time and API response time.')
 		.addField(`${config.prefix}invite`, 'Provide an invite link to invite this bot to your server!')
 		.addField(`${config.prefix}purge`, 'Delete between 2 and 100 messages in a channel (Needs Manage Messages)')
-		.addField(`${config.prefix}q`, `Fetch a quote from the same channel by using ${config.prefix}q <messageid> for in channel quotes and ${config.prefix}q <messageid> <channelid> for fetching quotes from other channels`)
+		.addField(`${config.sprefix}q`, `Fetch a quote from the same channel by using ${config.prefix}q <messageid> for in channel quotes and ${config.prefix}q <messageid> <channelid> for fetching quotes from other channels`)
 		.setTimestamp()
 		.setFooter('Bot by omnicons', 'https://i.imgur.com/vP5Azbd.png');
 	message.channel.send({ embed });
