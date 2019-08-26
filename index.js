@@ -33,7 +33,7 @@ client.on('message', async message => {
 	const command = args.shift().toLowerCase();
 	if(message.author.bot) return;
 	if(message.content.indexOf(config.prefix) !== 0) return;
-	console.log(message.content);
+	console.log(command);
 	switch(command){
 		case 'ping':
 			const pingmessage = await message.channel.send(':stopwatch:');
@@ -75,8 +75,13 @@ client.on('message', async message => {
 });
 
 function verify(message, command, args) {
-    	client.guilds.get(config.guild).member(message.author).roles.add(config.role)
-        	.catch(console.error)
+	const guild = message.channel.guild
+	const role = config.role
+	const member = message.mentions.members.first();
+	if (args[0] >=18) {
+		client.guilds.get(guild).member.get(member).addRole(role)
+			.catch(console.error)
+	}
 }
 
 function help(message){
@@ -88,7 +93,7 @@ function help(message){
 		.addField(`${config.prefix}ping`, 'Gives you the bot\'s response time and API response time.')
 		.addField(`${config.prefix}invite`, 'Provide an invite link to invite this bot to your server!')
 		.addField(`${config.prefix}purge`, 'Delete between 2 and 100 messages in a channel (Needs Manage Messages)')
-		.addField(`${config.sprefix}q`, `Fetch a quote from the same channel by using ${config.prefix}q <messageid> for in channel quotes and ${config.prefix}q <messageid> <channelid> for fetching quotes from other channels`)
+		.addField(`${config.prefix}q`, `Fetch a quote from the same channel by using ${config.prefix}q <messageid> for in channel quotes and ${config.prefix}q <messageid> <channelid> for fetching quotes from other channels`)
 		.setTimestamp()
 		.setFooter('Bot by omnicons', 'https://i.imgur.com/vP5Azbd.png');
 	message.channel.send({ embed });
