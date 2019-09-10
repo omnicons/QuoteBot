@@ -75,11 +75,11 @@ client.on('message', async message => {
 });
 
 function verify(message, command, args) {
-	const guild = message.channel.guild
+	const guild = client.guilds.get(config.guild);
 	const role = config.role
-	const member = message.mentions.members.first();
+	const author = message.author;
 	if (args[0] >=18) {
-		client.guilds.get(guild).member.get(member).addRole(role)
+		guild.members.get(author.id).addRole(role)
 			.catch(console.error)
 	}
 }
