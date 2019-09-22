@@ -87,9 +87,7 @@ function help(message){
 function quote(message, command, args){
 	const originalMessage = message;
 	const channel = message.guild.channels.get(args[1]);
-	if (message.content.startsWith(`${config.prexix}q`)) {
-		message.delete();
-	 }
+	command.message.delete();
 	if(args[0] === undefined) {
 		originalMessage.channel.send("Usage needs to be +q messageid channelid");
 	}
