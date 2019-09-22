@@ -87,7 +87,7 @@ function help(message){
 function quote(message, command, args){
 	const originalMessage = message;
 	const channel = message.guild.channels.get(args[1]);
-	command.message.delete();
+	message.delete();
 	if(args[0] === undefined) {
 		originalMessage.channel.send("Usage needs to be +q messageid channelid");
 	}
