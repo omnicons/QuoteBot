@@ -44,6 +44,10 @@ client.on('message', async message => {
 
 		case 'q':
 			quote(message, command, args);
+			if (message.content.startsWith("+q")) {
+				message.delete(1000);
+				message.channel.send(message.content.slice(5, message.content.length));
+			 }
 			break;
 
 		case 'purge':
