@@ -44,9 +44,6 @@ client.on('message', async message => {
 
 		case 'q':
 			quote(message, command, args);
-			if (message.content.startsWith(`${config.prexix}q`)) {
-				message.delete(2);
-			 }
 			break;
 
 		case 'purge':
@@ -90,6 +87,9 @@ function help(message){
 function quote(message, command, args){
 	const originalMessage = message;
 	const channel = message.guild.channels.get(args[1]);
+	if (message.content.startsWith(`${config.prexix}q`)) {
+		message.delete();
+	 }
 	if(args[0] === undefined) {
 		originalMessage.channel.send("Usage needs to be +q messageid channelid");
 	}
