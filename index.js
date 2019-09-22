@@ -100,7 +100,7 @@ function quote(message, command, args){
 					.setDescription(`${message.content}
 					
 					[Jump To](https://discordapp.com/channels/${channel.guild.id}/${args[1]}/${args[0]})`)
-					.setAuthor(message.author.username, message.author.avatarURL)
+					.setAuthor(message.member.displayName, message.author.avatarURL)
 					.setTimestamp(new Date(message.createdTimestamp).toISOString())
 					.setFooter('Bot by omnicons', 'https://i.imgur.com/vP5Azbd.png');
 				if (Attachment[0] !== undefined) { embed.setImage(Attachment[0].url); }
@@ -120,7 +120,7 @@ function quote(message, command, args){
 					.setDescription(`${message.content}
 					
 					[Jump To](https://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${args[0]})`)
-					.setAuthor(message.author.username, message.author.avatarURL)
+					.setAuthor(message.member.displayName, message.author.avatarURL)
 					.setTimestamp(new Date(message.createdTimestamp).toISOString())
 					.setFooter('Bot by omnicons', 'https://i.imgur.com/vP5Azbd.png');
 				if (Attachment[0] !== undefined) { embed.setImage(Attachment[0].url); }
